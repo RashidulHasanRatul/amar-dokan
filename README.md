@@ -5,7 +5,7 @@ To get started, you will need to have Node.js and MongoDB installed on your mach
 1.Clone the repository to your local machine:
 
 ```
-git clone https://github.com/YOUR_USERNAME/amar-dokan.git
+https://github.com/RashidulHasanRatul/amar-dokan.git
 
 ```
 2.Navigate to the project directory and install the required dependencies:
