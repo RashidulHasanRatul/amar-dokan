@@ -36,6 +36,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  phoneNumber: {
+    type: Number,
+    required: true,
+    maxlength: 11,
+  },
 });
 
 const User = mongoose.model("User", userSchema);
