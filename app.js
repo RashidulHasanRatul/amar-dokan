@@ -1,0 +1,12 @@
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+const pageNotFound = require("./middleware/404_middleware");
+const homePage = require("./routes/home/homePage");
+const userRegistration = require("./routes/users/registration_user.route");
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(homePage, userRegistration);
+app.use(pageNotFound);
+module.exports = { app };
