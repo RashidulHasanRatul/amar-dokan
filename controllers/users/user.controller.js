@@ -1,4 +1,4 @@
-const User = require("../../schema/user.schema");
+const User = require("../../schema/users/user.schema");
 const bcrypt = require("bcrypt");
 
 // User Registration
