@@ -1,5 +1,9 @@
 const User = require("../../schema/users/user.schema");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+function generateJWT(user) {
+  return jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
+}
 
 // User Registration
 const userRegistration = async (req, res) => {
@@ -44,4 +48,24 @@ const getAllUser = (req, res) => {
   }
 };
 
-module.exports = { userRegistration, getAllUser };
+const userLogIn = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    return res.status(400).send("No Registered User by this Email");
+  }
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (isMatch) {
+    const { _id } = user;
+    const token = generateJWT({ email });
+    res.send({
+      token: token,
+      message: "Login successful",
+    });
+  } else {
+    return res.status(400).send("Unable to login");
+  }
+};
+
+module.exports = { userRegistration, getAllUser, userLogIn };
