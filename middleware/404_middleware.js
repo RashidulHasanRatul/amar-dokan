@@ -1,5 +1,5 @@
 const pageNotFound = function (req, res, next) {
-  res.write(__dirname + "/404.html");
+  res.send({message:"404 Not Found"});
   res.end();
   next();
 };
