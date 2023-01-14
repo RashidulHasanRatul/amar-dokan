@@ -13,4 +13,12 @@ const customerRegistration = async (req, res) => {
   res.status(201).send("Customers Successfully Added");
 };
 
-module.exports = customerRegistration;
+const getAllCustomers = async (req, res) => {
+  try {
+    const customers = await Customer.find();
+    res.json(customers);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+module.exports = { customerRegistration, getAllCustomers };
