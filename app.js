@@ -13,6 +13,5 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(homePage, user, customer);
 app.use(pageNotFound);
-// app.use(check_login);
 
 module.exports = { app };
