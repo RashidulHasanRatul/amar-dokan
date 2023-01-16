@@ -1,5 +1,10 @@
 const User = require("../../schema/users/user.schema");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const _ = require("lodash");
+function generateJWT(user) {
+  return jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
+}
 
 // User Registration
 const userRegistration = async (req, res) => {
@@ -44,4 +49,42 @@ const getAllUser = (req, res) => {
   }
 };
 
-module.exports = { userRegistration, getAllUser };
+// User Login
+const userLogIn = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    return res.status(400).send("No Registered User by this Email");
+  }
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (isMatch) {
+    const { _id } = user;
+    const token = generateJWT({ email });
+    res.send({
+      token: token,
+      message: "Login successful",
+      _id: _id,
+    });
+  } else {
+    return res.status(400).send("Unable to login");
+  }
+};
+
+// user profile
+const userProfile = async (req, res) => {
+  const token = req.header("Authorization").replace("Bearer ", "");
+  const decoded = jwt.decode(token, process.env.JWT_SECRET);
+  User.findOne({ email: decoded.email }, function (err, user) {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+    const sortedUser = _.omit(user.toObject(), ["password"]);
+    res.send(sortedUser);
+  });
+};
+
+module.exports = { userRegistration, getAllUser, userLogIn, userProfile };
