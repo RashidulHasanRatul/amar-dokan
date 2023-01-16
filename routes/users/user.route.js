@@ -5,9 +5,11 @@ const {
   userRegistration,
   getAllUser,
   userLogIn,
+  userProfile,
 } = require("../../controllers/users/user.controller");
 
 router.post("/registration", userRegistration);
 router.get("/users", check_login, getAllUser);
 router.post("/login", userLogIn);
+router.get("/profile", check_login, userProfile);
 module.exports = router;
