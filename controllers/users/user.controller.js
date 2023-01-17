@@ -2,8 +2,10 @@ const User = require("../../schema/users/user.schema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const _ = require("lodash");
+const sendEmail = require("../emails/send_welcome_email");
+
 function generateJWT(user) {
-  return jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
+  return jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "5h" });
 }
 
 // User Registration
@@ -27,6 +29,7 @@ const userRegistration = async (req, res) => {
     });
     await user.save();
     res.status(201).send("Sign up successful");
+    sendEmail(email, name);
   } catch (e) {
     res.status(400).send(e);
   }
