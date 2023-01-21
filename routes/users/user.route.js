@@ -6,10 +6,15 @@ const {
   getAllUser,
   userLogIn,
   userProfile,
+  deleteUser,
+  updateUserProfile,
 } = require("../../controllers/users/user.controller");
 
 router.post("/registration", userRegistration);
 router.get("/users", check_login, getAllUser);
 router.post("/login", userLogIn);
 router.get("/profile", check_login, userProfile);
+router.put("/profile/update-profile", check_login, updateUserProfile);
+router.delete("/profile", check_login, deleteUser);
+
 module.exports = router;
