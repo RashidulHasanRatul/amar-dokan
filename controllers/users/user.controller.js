@@ -42,16 +42,14 @@ const userRegistration = async (req, res) => {
 // User Verification
 const verifyEmail = async (req, res) => {
   try {
-    console.log("This is Verify Email End Point");
-    console.log(req.headers.authorization);
-    console.log(req.params.token);
     const decoded = jwt.verify(req.params.token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded._id);
+    console.log(decoded);
+    const user = await User.findOne({ userId: decoded.userID });
     if (!user) throw new Error("User not found");
     user.isVerified = true;
     await user.save();
-    res.render("emailVerified");
-    //sendEmail(user.email, user.name);
+    res.send("emailVerified");
+    sendEmail(user.email, user.name);
   } catch (err) {
     res.status(400).send(err);
   }

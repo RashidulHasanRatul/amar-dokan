@@ -18,7 +18,7 @@ const sendVerificationEmail = (email, token) => {
     from: '"Amar Dokan" <welcome@example.com>', // sender address
     to: email, // list of receivers
     subject: "Amar Dokan Email Verification", // Subject line
-    html: `Please click this link to verify your email: <a href="http://localhost:3000/verifyEmail/${token}">http://localhost:3000/verifyEmail/${token}</a>`,
+    html: `Please click this link to verify your email: <a href="http://localhost:3000/verify-email/${token}">http://localhost:3000/verify-email/${token}</a>`,
   };
 
   // send mail with defined transport object
