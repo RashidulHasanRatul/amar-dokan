@@ -5,8 +5,9 @@ const _ = require("lodash");
 const uuid = require("uuid");
 const sendEmail = require("../emails/send_welcome_email");
 const sendVerificationEmail = require("../emails/sent_verification_email");
+
 function generateJWT(userID) {
-  return jwt.sign(userID, process.env.JWT_SECRET, { expiresIn: "5h" });
+  return jwt.sign({ userID }, process.env.JWT_SECRET, { expiresIn: "5h" });
 }
 
 // User Registration
@@ -30,15 +31,29 @@ const userRegistration = async (req, res) => {
       userId: uuid.v4(),
     });
     await user.save();
-    console.log("After the user save");
     const token = generateJWT(user.userId);
-    console.log(token);
-    console.log(user.email);
     sendVerificationEmail(user.email, token);
     res.status(201).send("Sign up successful");
-    // sendEmail(email, name);
   } catch (e) {
     res.status(400).send(e);
+  }
+};
+
+// User Verification
+const verifyEmail = async (req, res) => {
+  try {
+    console.log("This is Verify Email End Point");
+    console.log(req.headers.authorization);
+    console.log(req.params.token);
+    const decoded = jwt.verify(req.params.token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded._id);
+    if (!user) throw new Error("User not found");
+    user.isVerified = true;
+    await user.save();
+    res.render("emailVerified");
+    //sendEmail(user.email, user.name);
+  } catch (err) {
+    res.status(400).send(err);
   }
 };
 
@@ -157,4 +172,5 @@ module.exports = {
   userProfile,
   updateUserProfile,
   deleteUser,
+  verifyEmail,
 };
