@@ -15,10 +15,10 @@ const sendVerificationEmail = (email, token) => {
 
   // setup email data with unicode symbols
   let mailOptions = {
-    from: '"Welcome" <welcome@example.com>', // sender address
+    from: '"Amar Dokan" <welcome@example.com>', // sender address
     to: email, // list of receivers
-    subject: "Email Verification", // Subject line
-    html: `Please click this link to verify your email: <a href="http://localhost:3000/verify-email/${token}">http://localhost:3000/verify-email/${token}</a>`, // html body
+    subject: "Amar Dokan Email Verification", // Subject line
+    html: `Please click this link to verify your email: <a href="http://localhost:3000/verifyEmail/${token}">http://localhost:3000/verifyEmail/${token}</a>`,
   };
 
   // send mail with defined transport object
