@@ -5,6 +5,10 @@ const userSchema = new mongoose.Schema(
     userId: {
       type: String,
     },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
     name: {
       type: String,
       required: true,

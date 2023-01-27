@@ -8,10 +8,12 @@ const {
   userProfile,
   deleteUser,
   updateUserProfile,
+  verifyEmail
 } = require("../../controllers/users/user.controller");
 
 router.post("/registration", userRegistration);
 router.get("/users", check_login, getAllUser);
+router.get("/verify-email", verifyEmail);
 router.post("/login", userLogIn);
 router.get("/profile", check_login, userProfile);
 router.put("/profile/update-profile", check_login, updateUserProfile);
