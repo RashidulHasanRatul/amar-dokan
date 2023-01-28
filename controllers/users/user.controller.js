@@ -43,7 +43,6 @@ const userRegistration = async (req, res) => {
 const verifyEmail = async (req, res) => {
   try {
     const decoded = jwt.verify(req.params.token, process.env.JWT_SECRET);
-    console.log(decoded);
     const user = await User.findOne({ userId: decoded.userID });
     if (!user) throw new Error("User not found");
     user.isVerified = true;
@@ -83,6 +82,9 @@ const userLogIn = async (req, res) => {
     const user = await User.findOne({ email: email });
     if (!user) {
       return res.status(400).send("No Registered User by this Email");
+    }
+    if (!user.isVerified) {
+      return res.status(401).send("User is not verified");
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
