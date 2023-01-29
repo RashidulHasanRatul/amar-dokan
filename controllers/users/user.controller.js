@@ -165,6 +165,14 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const logout = (req, res) => {
+  console.log(req.user);
+  // Remove the token from the authorization header
+  delete req.headers["authorization"];
+  // Respond to the client with a success message
+  res.status(200).json({ message: "Logged out successfully." });
+};
+
 module.exports = {
   userRegistration,
   getAllUser,
@@ -173,4 +181,5 @@ module.exports = {
   updateUserProfile,
   deleteUser,
   verifyEmail,
+  logout,
 };
