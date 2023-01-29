@@ -1,5 +1,6 @@
 const pageNotFound = function (req, res, next) {
-  res.send({message:"404 Not Found"});
+  res.status(404);
+  res.render("errors/404", { title: "Page Not Found" });
   res.end();
   next();
 };
