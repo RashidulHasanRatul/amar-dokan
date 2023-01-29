@@ -15,7 +15,7 @@ const sendEmail = (email, name) => {
 
   // setup email data with unicode symbols
   let mailOptions = {
-    from: '"Welcome" <welcome@example.com>', // sender address
+    from: '"Amar Dokan" <welcome@example.com>', // sender address
     to: email, // list of receivers
     subject: "Welcome to our app", // Subject line
     text: `Hello ${name}, welcome to our app!`, // plain text body

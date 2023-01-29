@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 const customerSchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    ref: "User",
+    required: true,
+  },
   customerName: {
     type: String,
     required: true,

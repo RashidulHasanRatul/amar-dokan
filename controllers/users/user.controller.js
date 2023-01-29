@@ -42,16 +42,13 @@ const userRegistration = async (req, res) => {
 // User Verification
 const verifyEmail = async (req, res) => {
   try {
-    console.log("This is Verify Email End Point");
-    console.log(req.headers.authorization);
-    console.log(req.params.token);
     const decoded = jwt.verify(req.params.token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded._id);
+    const user = await User.findOne({ userId: decoded.userID });
     if (!user) throw new Error("User not found");
     user.isVerified = true;
     await user.save();
-    res.render("emailVerified");
-    //sendEmail(user.email, user.name);
+    res.send("emailVerified");
+    sendEmail(user.email, user.name);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -85,6 +82,9 @@ const userLogIn = async (req, res) => {
     const user = await User.findOne({ email: email });
     if (!user) {
       return res.status(400).send("No Registered User by this Email");
+    }
+    if (!user.isVerified) {
+      return res.status(401).send("User is not verified");
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
@@ -165,6 +165,14 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const logout = (req, res) => {
+  console.log(req.user);
+  // Remove the token from the authorization header
+  delete req.headers["authorization"];
+  // Respond to the client with a success message
+  res.status(200).json({ message: "Logged out successfully." });
+};
+
 module.exports = {
   userRegistration,
   getAllUser,
@@ -173,4 +181,5 @@ module.exports = {
   updateUserProfile,
   deleteUser,
   verifyEmail,
+  logout,
 };

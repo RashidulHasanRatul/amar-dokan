@@ -8,6 +8,7 @@ const homePage = require("./routes/home/homePage");
 const user = require("./routes/users/user.route");
 const customer = require("./routes/customers/customer.route");
 dotenv.config();
+app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
